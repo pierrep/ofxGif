@@ -1,31 +1,33 @@
 #include "ofApp.h"
 
-int index = 0;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	gifloader.load("view.gif");
+	gifsaver.create("test.gif");
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	if (ofGetElapsedTimeMillis() % 3)
-	{
-		index++;
-		if (index > gifloader.pages.size()-1) index = 0;
-	}
+
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
 	ofBackground(0);
 
-	gifloader.pages[index].draw(0, 0);
+	ofNoFill();
+    ofDrawCircle(ofGetMouseX(), ofGetMouseY(), 50);
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+	if (key == ' ') gifsaver.save();
+	if (key == 'a')
+	{
+		ofImage img;
+		img.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
+        gifsaver.append(img.getPixels());
+	}
 }
 
 //--------------------------------------------------------------
@@ -66,5 +68,14 @@ void ofApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
+    ofLogNotice() << "Dragged " << dragInfo.files.size() << " files across";
+	if (dragInfo.files.size() > 0)
+	{
+		for (int i = 0; i < dragInfo.files.size(); i++ )
+		{
+			gifsaver.append(dragInfo.files[i]);
+		}
+		
+	}
 
 }

@@ -1,36 +1,21 @@
 #pragma once
 
+#include "FreeImage.h"
 #include "ofMain.h"
 
-namespace ofxGIF
-{
-	class fiGifSaver
-	{
-	public:
-		fiGifSaver(){}
-		~fiGifSaver(){}
+class ofxGif {
+public:
+    void create(string filename);
+    void save();
 
-		void create(string filename);
-		void save();
+    void append(string filename); // not alpha channel
+    void append(ofPixels& pixels);
 
-		void append(string filename);		// not alpha channel
-		void append(ofPixels& pixels);
-	};
+    bool load(string filename);
 
-	class fiGifLoader
-	{
-	public:
+    vector<ofImage> pages;
 
-		fiGifLoader(){}
-		~fiGifLoader(){}
-
-		void load(string filename);
-
-		vector<ofImage> pages;
-
-	};
-
+protected:
+    // Pointer to a multi-page file stream
+    FIMULTIBITMAP* gif = nullptr;
 };
-
-
-
